@@ -4,11 +4,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/providers/google"
 
-	"github.com/shareed2k/goth_fiber"
+	"github.com/xEricL/goth_fiber"
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	)
 
 	app.Get("/login/:provider", goth_fiber.BeginAuthHandler)
-	app.Get("/auth/callback/:provider", func(ctx *fiber.Ctx) error {
+	app.Get("/auth/callback/:provider", func(ctx fiber.Ctx) error {
 		user, err := goth_fiber.CompleteUserAuth(ctx)
 		if err != nil {
 			log.Fatal(err)
@@ -34,7 +34,7 @@ func main() {
 
 		return ctx.SendString(user.Email)
 	})
-	app.Get("/logout", func(ctx *fiber.Ctx) error {
+	app.Get("/logout", func(ctx fiber.Ctx) error {
 		if err := goth_fiber.Logout(ctx); err != nil {
 			log.Fatal(err)
 		}
